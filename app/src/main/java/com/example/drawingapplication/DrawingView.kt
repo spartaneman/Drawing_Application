@@ -100,6 +100,8 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
 
         }
+        //invalidate the whole view. if the view is visible
+        invalidate()
         return true
     }
 
