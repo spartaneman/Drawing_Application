@@ -30,6 +30,8 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private var color = Color.BLACK
     //the canvas we want to draw on
     private var canvas: Canvas?= null
+    //We are trying to making the drawing stay persistent
+    private val mPaths = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
@@ -61,6 +63,14 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
         super.onDraw(canvas)
         canvas.drawBitmap(mCanvasBitmap!!,0f,0f, mCanvasPaint)
 
+        //This will draw any paths that have been created, making the paths remain
+        //persistent
+        for(path in mPaths)
+        {
+            mDrawPaint!!.strokeWidth = path.brushThickness
+            mDrawPaint!!.color = path.color
+            canvas.drawPath(path, mDrawPaint!!)
+        }
         //make sure draw path is not empty
         //This deals with what should happen when we draw
         if(!mDrawPath!!.isEmpty){
@@ -94,6 +104,9 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
             //when the user lifts their finger
             MotionEvent.ACTION_UP -> {
+                //trying to make the the paths persistent
+                //we add the crated path to the path arraylist
+                mPaths.add(mDrawPath!!)
                 mDrawPath = CustomPath(color, mBrushSize)
             }
             else -> {return false}
