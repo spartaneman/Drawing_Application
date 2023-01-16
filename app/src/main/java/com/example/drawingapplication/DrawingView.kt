@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
@@ -47,7 +48,7 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
         //how lines start and end
         mDrawPaint!!.strokeCap = Paint.Cap.ROUND
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
-        mBrushSize = 20.toFloat()
+        //mBrushSize = 20.toFloat()
     }
 
     //onSizeChanged - this is called during layout when the size of the view has changed
@@ -116,6 +117,20 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
         //invalidate the whole view. if the view is visible
         invalidate()
         return true
+    }
+
+    //This function is not private since we want it to be accessible in the main activity
+    //The function will set the brush size
+    //We must know the dimension of the screen first
+    fun setSizeForBrush(newSize: Float)
+    {
+        //This will set the brush size proportionate to the screen
+        //Complex unit dip makes density pixels the unit
+        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            newSize, resources.displayMetrics)
+
+        mDrawPaint!!.strokeWidth = mBrushSize
+
     }
 
     //This allows the transfer of variables within the class and only within the class
