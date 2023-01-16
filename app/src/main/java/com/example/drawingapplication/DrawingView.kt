@@ -125,8 +125,5 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
     }
 
-    //NOTES
-
-    //
 
 }
