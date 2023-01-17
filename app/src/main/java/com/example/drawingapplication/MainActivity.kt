@@ -40,14 +40,17 @@ class MainActivity : AppCompatActivity() {
         //Set brush sizes according to which button has been pressed
         smallBtn.setOnClickListener{
             drawingView?.setSizeForBrush(10.toFloat())
+            brushDialog.dismiss()
         }
 
         mediumBtn.setOnClickListener {
             drawingView?.setSizeForBrush(15.toFloat())
+            brushDialog.dismiss()
         }
 
         largeBtn.setOnClickListener {
             drawingView?.setSizeForBrush(20.toFloat())
+            brushDialog.dismiss()
         }
 
     }
