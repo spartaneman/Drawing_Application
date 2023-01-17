@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         //We can treat the Linear layout as an array
         val linearLayoutPaints = findViewById<LinearLayout>(R.id.ll_paint_colors)
         mCurrentImageButtonPaint = linearLayoutPaints[0] as ImageButton
+        mCurrentImageButtonPaint!!.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.pallet_normal)
+        )
 
 
         val ibBrushSize: ImageButton = findViewById(R.id.ib_brush)
