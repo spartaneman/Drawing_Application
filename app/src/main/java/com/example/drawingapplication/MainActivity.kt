@@ -3,16 +3,23 @@ package com.example.drawingapplication
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         drawingView = findViewById(R.id.drawing_view)
         drawingView?.setSizeForBrush(5.toFloat())
+
+        val ib_brush_size: ImageButton = findViewById(R.id.ib_brush)
+        ib_brush_size.setOnClickListener {
+            showBrushSizeChooseDialog()
+        }
 
     }
 
@@ -29,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         val mediumBtn: ImageButton = brushDialog.findViewById(R.id.ib_medium_brush)
         val largeBtn: ImageButton = brushDialog.findViewById(R.id.ib_large_brush)
 
+        brushDialog.show()
         //Set brush sizes according to which button has been pressed
         smallBtn.setOnClickListener{
             drawingView?.setSizeForBrush(10.toFloat())
@@ -41,5 +49,6 @@ class MainActivity : AppCompatActivity() {
         largeBtn.setOnClickListener {
             drawingView?.setSizeForBrush(20.toFloat())
         }
+
     }
 }
