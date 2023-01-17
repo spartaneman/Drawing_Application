@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
+
+    //current paint selected
+    private var mCurrentImageButtonPaint: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +21,13 @@ class MainActivity : AppCompatActivity() {
         drawingView = findViewById(R.id.drawing_view)
         drawingView?.setSizeForBrush(5.toFloat())
 
-        val ib_brush_size: ImageButton = findViewById(R.id.ib_brush)
-        ib_brush_size.setOnClickListener {
+        //We can treat the Linear layout as an array
+        val linearLayoutPaints = findViewById<LinearLayout>(R.id.ll_paint_colors)
+        mCurrentImageButtonPaint = linearLayoutPaints[0] as ImageButton
+
+
+        val ibBrushSize: ImageButton = findViewById(R.id.ib_brush)
+        ibBrushSize.setOnClickListener {
             showBrushSizeChooseDialog()
         }
 
