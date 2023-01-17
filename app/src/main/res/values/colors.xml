@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="view_border_color">#B8C8C5</color>
+    <color name="yellow">#f9f900</color>
+    <color name="red">#C70039</color>
+    <color name="green">#11db08</color>
+    <color name="blue">#0b4ff6</color>
+    <color name="purple"> #a600f4 </color>
+    <color name="pink"> #fa75fa </color>
+    <color name="random">#fa344351</color>
+
+
 </resources>
