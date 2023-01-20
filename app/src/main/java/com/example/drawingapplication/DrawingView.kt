@@ -133,6 +133,14 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
     }
 
+    //This will set the color of the paint
+    fun setColor(newColor: String)
+    {
+        //Allows parsing the hex string to color
+        color = Color.parseColor(newColor)
+        mDrawPaint!!.color = color
+
+    }
     //This allows the transfer of variables within the class and only within the class
     //Path class encapsulate compound geometric paths consisting lines and curves.
     //It can be drawn of a canvas.

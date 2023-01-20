@@ -83,6 +83,14 @@
             android:layout_height="25dp"
             android:layout_margin="2dp"
             android:src="@drawable/pallet_normal"
+            android:tag="@color/black"
+            android:background="@color/black"
+            />
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="2dp"
+            android:src="@drawable/pallet_normal"
             android:tag="@color/random"
             android:background="@color/random"
             />
