@@ -3,6 +3,7 @@ package com.example.drawingapplication
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -24,12 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         //We can treat the Linear layout as an array
         val linearLayoutPaints = findViewById<LinearLayout>(R.id.ll_paint_colors)
-        mCurrentImageButtonPaint = linearLayoutPaints[0] as ImageButton
-        mCurrentImageButtonPaint!!.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
-        )
 
-
+        //this imageButton will be used to change the brush size
+        //the onclicklistener will then call the function to show the dialog and change the brushSize
         val ibBrushSize: ImageButton = findViewById(R.id.ib_brush)
         ibBrushSize.setOnClickListener {
             showBrushSizeChooseDialog()
@@ -70,6 +68,21 @@ class MainActivity : AppCompatActivity() {
 
     fun paintClicked(view: View)
     {
+        if(view !==mCurrentImageButtonPaint)
+        {
+            val imageButton = view as ImageButton
+            //the tag will be the hex value
+            val colorTag = imageButton.tag.toString()
+            drawingView?.setColor(colorTag)
+            imageButton!!.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
+            )
 
+            mCurrentImageButtonPaint?.setImageDrawable(
+                ContextCompat.getDrawable(this,R.drawable.pallet_normal)
+            )
+
+            mCurrentImageButtonPaint = view
+        }
     }
 }
