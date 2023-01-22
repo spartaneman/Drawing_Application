@@ -1,18 +1,43 @@
 package com.example.drawingapplication
 
+import android.app.AlertDialog
 import android.app.Dialog
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import android.Manifest
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
 
+    //Added the permission in the Android Manifest first
+    //Requesting the user for permission
+    private val permissionRequest : ActivityResultLauncher<Array<String>> =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+                permissions ->
+                permissions.entries.forEach{
+                    val permissionName = it.key
+                    val isGranted = it.value
+                    if(isGranted){
+                        Toast.makeText(this, "Permission Granted for $permissionName", Toast.LENGTH_SHORT).show()
+                    }
+                    else
+                    {
+                        Toast.makeText(this, "Permission Denied for $permissionName", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
     //current paint selected
     private var mCurrentImageButtonPaint: ImageButton? = null
 
@@ -26,12 +51,29 @@ class MainActivity : AppCompatActivity() {
         //We can treat the Linear layout as an array
         val linearLayoutPaints = findViewById<LinearLayout>(R.id.ll_paint_colors)
 
+        val btnImage: ImageButton = findViewById(R.id.ib_gallery)
+
+        //THIS WILL LAUNCH THE PERMISSION REQUEST
+        //You must check that the build version matches and the shouldShow will state whether the
+        //permission exists.
+        btnImage.setOnClickListener {
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M &&
+                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Toast.makeText(this,"Denied",Toast.LENGTH_LONG).show()
+            }else
+            {
+
+            }
+        }
+
         //this imageButton will be used to change the brush size
         //the onclicklistener will then call the function to show the dialog and change the brushSize
         val ibBrushSize: ImageButton = findViewById(R.id.ib_brush)
         ibBrushSize.setOnClickListener {
             showBrushSizeChooseDialog()
         }
+
+
 
     }
 
@@ -84,5 +126,18 @@ class MainActivity : AppCompatActivity() {
 
             mCurrentImageButtonPaint = view
         }
+    }
+
+    private fun requestStoragePermission()
+
+    private fun showRationalDialog(
+        title: String,
+        message: String,
+    ){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+            .setMessage(message)
+            .setNeutralButton("Cancel"){dialog, _->dialog.dismiss()}
+        builder.create().show()
     }
 }
