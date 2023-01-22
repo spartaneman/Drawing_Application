@@ -25,7 +25,7 @@ import androidx.core.app.ActivityCompat
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
 
-    //current paint selected
+    //current paint selected b
     private var mCurrentImageButtonPaint: ImageButton? = null
 
     //Creating a Activity Launcher to be used by the Intent to select an image for the
