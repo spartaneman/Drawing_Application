@@ -16,10 +16,31 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import android.Manifest
+import android.content.Intent
+import android.provider.MediaStore
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
+
+    //current paint selected
+    private var mCurrentImageButtonPaint: ImageButton? = null
+
+    //Creating a Activity Launcher to be used by the Intent to select an image for the
+    //External Storage
+    val openGalleryLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+            if(result.resultCode == RESULT_OK && result.data != null)
+            {
+                //URI is the location of the image in the device
+                val imageBackground : ImageView = findViewById(R.id.iv_background)
+                imageBackground.setImageURI(result.data?.data)
+            }
+        }
+
 
     //Added the permission in the Android Manifest first
     //Requesting the user for permission
@@ -31,6 +52,11 @@ class MainActivity : AppCompatActivity() {
                     val isGranted = it.value
                     if(isGranted){
                         Toast.makeText(this, "Permission Granted for $permissionName", Toast.LENGTH_SHORT).show()
+
+                        //Creating Intent to go to Gallery
+                        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        //Goal is not just to go to gallery but to select and get an image, A launcher must be created for this
+                        openGalleryLauncher.launch(galleryIntent)
                     }
                     else
                     {
@@ -39,8 +65,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-    //current paint selected
-    private var mCurrentImageButtonPaint: ImageButton? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +86,20 @@ class MainActivity : AppCompatActivity() {
                 requestStoragePermission()
         }
 
+
+        //UndoButton
+        //Remove the last path in the array
+        val ibUndo: ImageButton = findViewById(R.id.ib_undo)
+        ibUndo.setOnClickListener {
+            drawingView?.undoLastPath()
+        }
+
         //this imageButton will be used to change the brush size
         //the onclicklistener will then call the function to show the dialog and change the brushSize
         val ibBrushSize: ImageButton = findViewById(R.id.ib_brush)
         ibBrushSize.setOnClickListener {
             showBrushSizeChooseDialog()
+            drawingView
         }
 
 

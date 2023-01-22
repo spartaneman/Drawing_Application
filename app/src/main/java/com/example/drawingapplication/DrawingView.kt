@@ -33,6 +33,7 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private var canvas: Canvas?= null
     //We are trying to making the drawing stay persistent
     private val mPaths = ArrayList<CustomPath>()
+    private val mUndoPaths = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
@@ -145,6 +146,19 @@ class DrawingView(context: Context, attrs: AttributeSet): View(context, attrs) {
     //Path class encapsulate compound geometric paths consisting lines and curves.
     //It can be drawn of a canvas.
     internal inner class CustomPath(var color: Int, var brushThickness: Float): Path(){
+
+    }
+
+    //Function will remove the last path in the mPaths and add it to
+    //mUndoPaths
+    //Calling invalidate() automatically calls the onDraw method
+    fun undoLastPath()
+    {
+        if(mPaths.isNotEmpty())
+        {
+            mUndoPaths.add(mPaths.removeLast())
+            invalidate()
+        }
 
     }
 

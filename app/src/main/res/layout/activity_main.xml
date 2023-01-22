@@ -152,7 +152,17 @@
             android:layout_height="50dp"
             android:src="@drawable/ic_gallery"
             android:scaleType="fitXY"
-            android:paddingRight="5dp"
+            android:paddingRight="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/ib_undo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_undo"
+            android:scaleType="fitXY"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             />
 
         <ImageButton
