@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import android.Manifest
+import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
@@ -57,13 +58,7 @@ class MainActivity : AppCompatActivity() {
         //You must check that the build version matches and the shouldShow will state whether the
         //permission exists.
         btnImage.setOnClickListener {
-            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M &&
-                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Toast.makeText(this,"Denied",Toast.LENGTH_LONG).show()
-            }else
-            {
-
-            }
+                requestStoragePermission()
         }
 
         //this imageButton will be used to change the brush size
@@ -128,7 +123,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestStoragePermission()
+    //Function will show Permission Request when called
+    private fun requestStoragePermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE))
+        {
+            showRationalDialog("Drawing Application", "Drawing App Requires Access to your " +
+                    "External Storage to be able to change your image background")
+        }
+        else{
+            permissionRequest.launch(arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+                //TODO - Add Writing External Storage
+            ))
+        }
+    }
 
     private fun showRationalDialog(
         title: String,
