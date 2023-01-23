@@ -34,6 +34,8 @@ import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
+    private var customProgressDialog: Dialog? = null
+
     private var drawingView: DrawingView?  =null
 
     //current paint selected b
@@ -285,6 +287,18 @@ class MainActivity : AppCompatActivity() {
         }
         return result
     }
+
+    /*
+    * Method used to show a custom progress dialog.
+    * */
+    private fun showProgressDialog(){
+        customProgressDialog = Dialog(this@MainActivity)
+
+        //Set the screen content from a layout resource
+        //Resource will be inflated, adding all top-levels to the screen
+        customProgressDialog?.setContentView(R.layout.dialog_progess_layout)
+
+        customProgressDialog?.show()
 }
 
 
