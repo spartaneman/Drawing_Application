@@ -24,6 +24,11 @@ import android.provider.MediaStore
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.app.ActivityCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView?  =null
@@ -209,6 +214,56 @@ class MainActivity : AppCompatActivity() {
         }
         view.draw(canvas)
         return rBitmap
+    }
+
+    //A coroutine that will will take a bitmap nullable and return a String
+    //Remember must be suspend and designate the type of coroutine
+    private suspend fun saveBitmapFile(mBitmap: Bitmap?): String
+    {
+        var result = ""
+        withContext(Dispatchers.IO){
+            if(mBitmap != null){
+                try {
+                    //Since we are out putting an image
+                    //the buffer size starts at 32 bytes but increases
+                    val bytes = ByteArrayOutputStream()
+                    mBitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
+
+                    //create a file and store it
+                    //give us the path of where the file will be created as a file item
+                    //file separator is a string / and then add app name
+                    //Adding the currentTime in Millis/1000 to have unique id per image
+                    val file = File(externalCacheDir?.absoluteFile.toString()
+                    + File.separator + "DrawingApp" + System.currentTimeMillis()/1000+".png"
+                    )
+
+                    val fileOut = FileOutputStream(file)
+                    fileOut.write(bytes.toByteArray())
+                    fileOut.close()
+
+                    //Location where image was saved
+                    result = file.absolutePath
+
+                    //this will run in the U.i Thread
+                    runOnUiThread{
+                        if (result.isNotEmpty())
+                        {
+                            Toast.makeText(
+                                this@MainActivity, "Image saved at $result in your device", Toast.LENGTH_LONG).show()
+                        }else
+                        {
+                            Toast.makeText(this@MainActivity, "Image was unable to be saved", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }catch (e: java.lang.Exception)
+                {
+                    //will print to the log
+                    result = ""
+                    e.printStackTrace()
+                }
+            }
+        }
+        return result
     }
 }
 
