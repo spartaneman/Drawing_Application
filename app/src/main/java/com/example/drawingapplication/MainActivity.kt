@@ -183,3 +183,30 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 }
+
+/*
+* COROUTINES
+* By Using coroutines we can do put heavier calculations
+* into a different thread than the U.I thread,
+*
+* Benefits
+* -light weight
+*   -You can run many co routines on a single thread due to support of suspension
+* -Fewer Memory Leaks
+* -Built in Cancellation support
+* -Jetpack Integration
+*
+* Coroutine Scopes
+* -structured concurrency
+* - Different Scopes
+*   -viewModelScope
+*       view model class
+*   -lifeCycleScope
+*       activity fragment
+*   -Custom Scope attach to job and clear it once the Job is done.
+*
+* Suspend
+*   -adding this infront of the Function will make the function a coroutine
+*   -must also run in in a different thread.
+*   -withContext(Dispatcher.IO)
+* */
