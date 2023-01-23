@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
                     {
                         Toast.makeText(this, "Permission Denied for $permissionName", Toast.LENGTH_SHORT).show()
                     }
-
                 }
             }
 
@@ -101,6 +100,13 @@ class MainActivity : AppCompatActivity() {
             showBrushSizeChooseDialog()
             drawingView
         }
+
+        //Save the image into the external hard drive.
+        //Make sure the permission is set to write into external
+        //We want to know where we want to write
+        val ibSave: ImageButton = findViewById(R.id.ib_save)
+
+
 
 
 
