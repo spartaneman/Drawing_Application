@@ -21,6 +21,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import android.provider.MediaStore
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -274,6 +275,7 @@ class MainActivity : AppCompatActivity() {
                         {
                             Toast.makeText(
                                 this@MainActivity, "Image saved at $result in your device", Toast.LENGTH_LONG).show()
+                            shareImage(result)
                         }else
                         {
                             Toast.makeText(this@MainActivity, "Image was unable to be saved", Toast.LENGTH_LONG).show()
@@ -303,6 +305,9 @@ class MainActivity : AppCompatActivity() {
         customProgressDialog?.show()
     }
 
+    /*
+    * Dialog needs to be dismissed to remove from the view
+    * */
     private fun cancelProgressDialog(){
         if(customProgressDialog != null)
         {
@@ -310,6 +315,25 @@ class MainActivity : AppCompatActivity() {
             customProgressDialog = null
         }
     }
+
+    /*
+    * will Now create a function that will share a file using the
+    * media scanner connection. result will be the location of the file
+    * within the device
+    * */
+    private fun shareImage(result: String)
+    {
+        MediaScannerConnection.scanFile(this, arrayOf(result), null){
+            //we are putting the location with the URI and putting it into the intent
+            path, uri ->
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.type = "image/png"
+            startActivity(Intent.createChooser(shareIntent, "Share"))
+        }
+    }
+
 
 }
 
