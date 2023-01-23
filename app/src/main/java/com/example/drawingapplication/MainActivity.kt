@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         ibSave.setOnClickListener {
             if(isReadStorageAllowed())
             {
+                showProgressDialog()
                 lifecycleScope.launch{
                     val flDrawView: FrameLayout = findViewById(R.id.fl_drawing_view_container)
 
@@ -268,6 +269,7 @@ class MainActivity : AppCompatActivity() {
 
                     //this will run in the U.i Thread
                     runOnUiThread{
+                        cancelProgressDialog()
                         if (result.isNotEmpty())
                         {
                             Toast.makeText(
@@ -291,7 +293,7 @@ class MainActivity : AppCompatActivity() {
     /*
     * Method used to show a custom progress dialog.
     * */
-    private fun showProgressDialog(){
+    private fun showProgressDialog() {
         customProgressDialog = Dialog(this@MainActivity)
 
         //Set the screen content from a layout resource
@@ -299,6 +301,16 @@ class MainActivity : AppCompatActivity() {
         customProgressDialog?.setContentView(R.layout.dialog_progess_layout)
 
         customProgressDialog?.show()
+    }
+
+    private fun cancelProgressDialog(){
+        if(customProgressDialog != null)
+        {
+            customProgressDialog?.dismiss()
+            customProgressDialog = null
+        }
+    }
+
 }
 
 
