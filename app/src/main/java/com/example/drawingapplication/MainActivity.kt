@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.provider.MediaStore
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -178,6 +181,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Dialog to come up when permission given or not
     private fun showRationalDialog(
         title: String,
         message: String,
@@ -188,7 +192,26 @@ class MainActivity : AppCompatActivity() {
             .setNeutralButton("Cancel"){dialog, _->dialog.dismiss()}
         builder.create().show()
     }
+
+    //Get the bitmap of the view and return a bitmap from the view.
+    private fun getBitmapFromView(view: View): Bitmap{
+        val rBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+
+        //bind the canvas that is in the view
+        //in this case there are 3 views, the background view, canvas and the drawing view
+        val canvas = Canvas(rBitmap)
+        val bgDrawable = view.background
+        if(bgDrawable != null)
+        {
+            bgDrawable.draw(canvas)
+        }else{
+            canvas.drawColor(Color.WHITE)
+        }
+        view.draw(canvas)
+        return rBitmap
+    }
 }
+
 
 /*
 * COROUTINES
